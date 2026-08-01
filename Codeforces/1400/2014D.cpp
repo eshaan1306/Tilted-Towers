@@ -36,52 +36,42 @@ const ll MOD = 998244353;
 
 */
 
-vi vis;
-vvi adj;
-vl a;
-vl ans;
-
-void dfs(int u,int par,int grandpar){
-    vis[u]=1;
-    if (par==-1 || grandpar==-1){
-        ans[u]=a[u];
+void solve(){
+    int n,d,k;
+    cin>>n>>d>>k;
+    vi start(n+2,0),end(n+2,0);
+    vi diff(n+2,0);
+    for(int i=0;i<k;i++){
+        int l,r;
+        cin>>l>>r;
+        start[l]++;
+        end[r+1]++;
     }
-    else{
-        ans[u]=max(a[u],a[u]-a[par]+ans[grandpar]);
+    int cntStart=0,cntEnd=0;
+    for(int i=1;i<=n;i++){
+        start[i]+=start[i-1];
+        end[i]+=end[i-1];
     }
-    for(auto &v:adj[u]){
-        if (!vis[v]){
-            dfs(v,u,par);
+    int maxDay=-1,minDay=-1;
+    int mini=INT_MAX,maxi=INT_MIN;
+    for(int i=d;i<=n;i++){
+        int cnt = start[i]-end[i-d+1];
+        if (mini>cnt){
+            minDay=(i-d+1);
+            mini=cnt;
+        }
+        if (maxi<cnt){
+            maxDay=(i-d+1);
+            maxi=cnt;
         }
     }
-}
-
-void solve(){
-    int n;
-    cin>>n;
-    a.assign(n, 0);
-    vis.assign(n, 0);
-    ans.assign(n, 0);
-    adj.assign(n, vi());
-    for(int i=0;i<n;i++){
-        cin>>a[i];
-    }
-    for(int i=0;i<n-1;i++){
-        int u,v;
-        cin>>u>>v;
-        u--,v--;
-        adj[u].pb(v);
-        adj[v].pb(u);
-    }
-    dfs(0,-1,-1);
-    printv(ans);
+    cout<<maxDay<<" "<<minDay;
 }
 
 int main(){
     fastio;
     #ifndef ONLINE_JUDGE
     freopen("input.txt","r",stdin);
-    // freopen("output.txt","w",stdout);
     #endif
     int t=1;
     cin>>t;
