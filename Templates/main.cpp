@@ -9,6 +9,7 @@ using namespace std;
 #define no cout << "NO" <<"\n"
 #define vi vector<int>
 #define vl vector<ll>
+#define vd vector<double>
 #define pii pair<int,int>
 #define pll pair<ll,ll>
 #define vpii vector<pair<int,int>>
