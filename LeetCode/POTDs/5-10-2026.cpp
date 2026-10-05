@@ -1,26 +1,38 @@
 class Solution {
 public:
 
-    int soln(string &s, int l, int r) {
-        // (), base case
-        if (l + 1 == r) return 1;   
+    int soln(string &s, int &i) {
         int cur = 0;
-        for (int i = l; i <= r; i++) {
-            if (s[i] == '(') cur++;
-            else cur--;
-            if (cur == 0) {
-                if (i == r) {
-                    // whole thing is (A)
-                    return 2 * soln(s, l + 1, r - 1);
+        while(i < s.size()){
+            //getting inside
+            if (s[i] == '('){
+                i++;
+                //best, no bt
+                if (s[i] == ')'){
+                    cur++;
+                    i++;
+                    if (i == s.size()){
+                        continue;
+                    }
+                    
                 }
-                // whole thing is AB
-                return soln(s, l, i) + soln(s, i + 1, r);
+                else{
+                    //this means this is (A)
+                    int A = soln(s,i);
+                    cur += 2*A; 
+                }
+            }
+            else{
+                //')', so this is the end 
+                i++;
+                return cur;
             }
         }
-        return 0;
+        return cur;
     }
 
     int scoreOfParentheses(string s) {
-        return soln(s, 0, s.size() - 1);
+        int i=0;
+        return soln(s, i);
     }
 };
